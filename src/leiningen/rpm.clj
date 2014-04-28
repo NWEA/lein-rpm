@@ -16,8 +16,23 @@
 (defn create-sources [{:keys [source softlinkSource]}]
   (concat (create-source Source source) (create-source SoftlinkSource softlinkSource)))
 
-(defn create-mapping [{s :sources :as mapping}]
-  (data/to-java Mapping (assoc mapping :sources (create-sources s))))
+(defn create-mapping [{:keys [directory configuration documentation filemode username groupname directoryIncluded recurseDirectories artifact dependency sources] :as mapping}]
+  (let [m (Mapping.)]
+    (when directory (.setDirectory m directory))
+    (when configuration (.setConfiguration m configuration))
+    (when documentation (.setDocumentation m documentation))
+    (when filemode (.setFilemode m filemode))
+    (when username (.setUsername m username))
+    (when groupname (.setGroupname m groupname))
+    (when directoryIncluded (.setDirectoryIncluded m directoryIncluded))
+    (when recurseDirectories (.setRecurseDirectories m recurseDirectories))
+
+    (when artifact (println "ignoring artifact mapping") ;(.setArtifact m artifact)
+      )
+    (when dependency (println "ignoring dependency mapping") ;(.setDependency m dependency)
+          )
+    (when sources (.setSources m (create-sources sources)))
+    m))
 
 (defn create-mappings [[mapping & rest]]
   (if mapping (cons (create-mapping mapping) (create-mappings rest)) ()))

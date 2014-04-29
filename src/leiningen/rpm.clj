@@ -63,11 +63,11 @@
 
 (defn rpm
   "Create an RPM"
-  [{{:keys [summary distribution name license group packager mappings prefix preinstall postinstall preremove postremove requires provides conflicts workarea]} :rpm :keys [version]} & keys]
+  [{{:keys [description distribution name license group packager mappings prefix preinstall postinstall preremove postremove requires provides conflicts workarea]} :rpm :keys [version]} & keys]
   (let [mojo (createBaseMojo)]
     (set-mojo! mojo "projversion" version)
     (set-mojo! mojo "name" name)
-    (set-mojo! mojo "summary" summary)
+    (set-mojo! mojo "description" description)
     (set-mojo! mojo "distribution" distribution)
     (set-mojo! mojo "license" license)
     (set-mojo! mojo "group" group)

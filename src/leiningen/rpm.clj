@@ -63,20 +63,22 @@
 
 (defn rpm
   "Create an RPM"
-  [{{:keys [summary name copyright mappings prefix preinstall postinstall preremove postremove requires provides conflicts workarea]} :rpm :keys [version]} & keys]
+  [{{:keys [summary distribution name license group packager mappings prefix preinstall postinstall preremove postremove requires provides conflicts workarea]} :rpm :keys [version]} & keys]
   (let [mojo (createBaseMojo)]
     (set-mojo! mojo "projversion" version)
     (set-mojo! mojo "name" name)
     (set-mojo! mojo "summary" summary)
-    (set-mojo! mojo "copyright" copyright)
+    (set-mojo! mojo "distribution" distribution)
+    (set-mojo! mojo "license" license)
+    (set-mojo! mojo "group" group)
+    (set-mojo! mojo "packager" packager)
+    (set-mojo! mojo "prefix" prefix)
     (set-mojo! mojo "workarea" (clojure.java.io/file workarea)) 
     (set-mojo! mojo "mappings" (create-array-list (create-mappings mappings)))
-    (set-mojo! mojo "prefix" prefix)
     (set-mojo! mojo "preinstallScriptlet" (create-scriptlet preinstall))
     (set-mojo! mojo "postinstallScriptlet" (create-scriptlet postinstall))
     (set-mojo! mojo "preremoveScriptlet" (create-scriptlet preremove))
     (set-mojo! mojo "postremoveScriptlet" (create-scriptlet postremove))
-    
     (set-mojo! mojo "requires" (create-dependency requires))
     (set-mojo! mojo "provides" (create-dependency provides))
     (set-mojo! mojo "conflicts" (create-dependency conflicts))

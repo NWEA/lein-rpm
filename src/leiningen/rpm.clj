@@ -48,9 +48,10 @@
 
 (defn rpm
   "Create an RPM"
-  [{{:keys [summary name copyright group mappings prefix preinstall postinstall preremove postremove requires provides conflicts workarea]} :rpm :keys [version]} & keys]
+  [{{:keys [summary name copyright group mappings prefix preinstall postinstall preremove postremove requires provides conflicts workarea version release]} :rpm} & keys]
   (let [mojo (createBaseMojo)]
     (set-mojo! mojo "projversion" version)
+    (set-mojo! mojo "release" release)
     (set-mojo! mojo "name" name)
     (set-mojo! mojo "summary" summary)
     (set-mojo! mojo "copyright" copyright)
@@ -62,7 +63,7 @@
     (set-mojo! mojo "postinstallScriptlet" (create-scriptlet postinstall))
     (set-mojo! mojo "preremoveScriptlet" (create-scriptlet preremove))
     (set-mojo! mojo "postremoveScriptlet" (create-scriptlet postremove))
-    
+
     (set-mojo! mojo "requires" (create-dependency requires))
     (set-mojo! mojo "provides" (create-dependency provides))
     (set-mojo! mojo "conflicts" (create-dependency conflicts))
